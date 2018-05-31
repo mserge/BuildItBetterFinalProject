@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">JokeAndroid</string>
+    <string name="title_activity_joke">JokeActivity</string>
+    <string name="no_joke">No joke provided</string>
+    <string name="empty_intent">Empty intent provided</string>
+</resources>
