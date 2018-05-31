@@ -3,6 +3,7 @@ package com.udacity.gradle.builditbigger;
 import android.content.Context;
 
 import android.os.Bundle;
+import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Pair;
 import android.view.Menu;
@@ -15,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private EditText etName;
+    private CountingIdlingResource espressoIdlingResource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,4 +53,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public CountingIdlingResource getEspressoIdlingResource() {
+        if(espressoIdlingResource == null)
+            espressoIdlingResource = new CountingIdlingResource("Backend", true);
+        return espressoIdlingResource;
+    }
 }

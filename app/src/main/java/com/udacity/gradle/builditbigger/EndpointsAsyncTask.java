@@ -3,6 +3,8 @@ package com.udacity.gradle.builditbigger;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.test.espresso.idling.CountingIdlingResource;
+import android.util.Log;
 import android.util.Pair;
 import android.widget.Toast;
 
@@ -18,12 +20,28 @@ import info.markovy.jokeandroid.JokeActivity;
 
 class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> {
     public static final String ROOT_URL = "http://10.0.2.2:8080/_ah/api/";
+    private static final String TAG = "EndpointsAsyncTask";
 
     private static MyApi myApiService = null;
     private Context context;
+    private CountingIdlingResource espressoIdlingResource;
 
     @Override
     protected String doInBackground(Pair<Context, String>... params) {
+        try{
+            if(context!= null && ((MainActivity)context).getEspressoIdlingResource() != null){
+                Log.d(TAG, "Idling resource given");
+                espressoIdlingResource = ((MainActivity) context).getEspressoIdlingResource();
+                espressoIdlingResource.increment();
+            } else {
+                Log.d(TAG, "No Idling resource given");
+
+            }
+        } catch (Exception ex) {
+            Log.e(TAG, "No idling resource " + ex.getMessage());
+            espressoIdlingResource = null;
+        }
+
         if(myApiService == null) {  // Only do this once
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
@@ -57,6 +75,11 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> 
         Intent intent = new Intent(context, JokeActivity.class);
         intent.putExtra(JokeActivity.PARAM_JOKE,result);
         context.startActivity(intent);
+        if(espressoIdlingResource!=null){
+            espressoIdlingResource.decrement();
+            Log.d(TAG, "Idling resource freeing");
+
+        }
       //  Toast.makeText(context, result, Toast.LENGTH_LONG).show();
     }
 }

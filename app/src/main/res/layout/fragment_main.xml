@@ -18,13 +18,15 @@
     <EditText android:id="@+id/name"
         android:textSize="20sp"
         android:hint="Your name"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
+        android:layout_below="@+id/instructions_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <Button
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/instructions_text_view"
+        android:layout_below="@+id/name"
         android:onClick="tellJoke"
         android:text="@string/button_text" />
 
